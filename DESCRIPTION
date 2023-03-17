@@ -5,6 +5,8 @@ Authors@R: c(
     person(given = "Gianluca",family = "Baio",role = c("aut", "cre"),email = "g.baio@ucl.ac.uk"),
     person("Philip","Cooney",role="ctb",email="philip.cooney@hotmail.com"),
     person("Andrew","Jones",role="ctb",email="andrew.r.johnson@postgrad.curtin.edu.au"))
+URL: https://github.com/giabaio/survHEhmc, https://gianluca.statistica.it/software/survhe/
+BugReports: https://github.com/giabaio/survHEhmc/issues
 Description: A module to complement the backbone structure of the package 'survHE' and
     expand its functionality to run survival models under a Bayesian approach (based
     on Hamiltonian Monte Carlo). <doi:10.18637/jss.v095.i14>.
@@ -14,7 +16,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Biarch: true
 Depends: 
-    R (>= 3.4.0),
+    R (>= 3.6.0),
     survHE,
     dplyr
 Imports: 
