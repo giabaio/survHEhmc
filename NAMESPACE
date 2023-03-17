@@ -1,0 +1,16 @@
+export(poly.weibull)
+export(runHMC)
+export(stanmodels)
+import(Rcpp)
+import(dplyr)
+import(survHE)
+import(methods)
+importFrom("rstan", "sampling")
+importFrom("stats", "dgamma", "median", "model.frame", "model.matrix",
+           "pexp", "pgamma", "plnorm", "pweibull", "quantile", "time",
+           "update", "var")
+importFrom("flexsurv", "hexp","dgenf","pgenf","dgengamma","pgengamma",
+           "hgompertz","pgompertz","hllogis","pllogis","hlnorm","hweibull",
+           "hweibullPH","pweibullPH")
+importFrom("tibble", "rownames_to_column")
+useDynLib(survHEhmc, .registration = TRUE)
