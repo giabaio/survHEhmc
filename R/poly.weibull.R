@@ -1,9 +1,9 @@
 #' Fit Poly-Weibull model for survival analysis of mixture hazards
-#' 
+#'
 #' Runs the survival analysis using a Poly-Weibull model
-#' 
+#'
 #' On object in the class \code{survHE} containing the following elements
-#' 
+#'
 #' @param formula a list of formulae (one for each components of the mixture.
 #' Can specify one single formula (in which case, the model is a simple Weibull
 #' regression). For example, a valid call is using
@@ -12,7 +12,7 @@
 #' This must contain data for the 'event' variable. In case there is no
 #' censoring, then \code{event} is a column of 1s.
 #' @param \dots Additional options (for INLA or HMC).
-#' 
+#'
 #' **HMC** specific options \code{chains} = number of chains to run in the HMC
 #' (default = 2) \code{iter} = total number of iterations (default = 2000)
 #' \code{warmup} = number of warmup iterations (default = iter/2) \code{thin} =
@@ -48,9 +48,9 @@
 #' @examples
 #' \dontrun{
 #' }
-#' 
+#'
 #' #See Baio (2019) for extended example
-#' 
+#'
 #' @export poly.weibull
 poly.weibull <- function(formula=NULL,data,...) {
   # Fits the PolyWeibull model of Demiris et al (2015), SMMR 24(2), 287-301 to the data
@@ -69,22 +69,22 @@ poly.weibull <- function(formula=NULL,data,...) {
   # cores = the number of CPU (cores) used to run the sampling procedure using rstan (default = 1)
   # priors = a list (of lists) specifying the values for the parameters of the prior distributions in the models
   # save.stan = a logical indicator (default = FALSE). If TRUE, then saves the data list for Stan and the model file(s)
-  
-  
+
+
   # This requires rstan, so if it's not installed asks for it!
   if(!isTRUE(requireNamespace("rstan",quietly=TRUE))) {
     stop("You need to install the R package 'rstan'. Please run in your R terminal:\n install.packages('rstan')")
   }
   distr="polyweibull"
-  
+
   # Optional arguments
   exArgs <- list(...)
-  
-  # Avoids issues with visible binding
-  utils::globalVariables(c("event","."))
-  
+
+  # # Avoids issues with visible binding
+  # utils::globalVariables(names=c("event","."),package="survHE",add=FALSE)
+
   # Sets up defaults
-  
+
   # Check whether the user has specified a list of formulae to be used in each compoenent of the model
   if (!is.null(formula)) {
     # a. The user has specified a formula, but has only given 1 element, then expand it
@@ -92,12 +92,12 @@ poly.weibull <- function(formula=NULL,data,...) {
     if (inherits(formula,"formula")) {
       formula <- list(formula)
     }
-    M <- length(formula) 
+    M <- length(formula)
     if(length(formula)<2){
       stop("Please speficy at least 2 components for the Poly-Weibull model by creating\n  a list of at least two formulae, eg: 'list(Surv(time,event)~1,Surv(time,event)~treatment)'")
     }
   }
-  
+
   ## Stan options (the defaults are set in line with Stan's original)
   nlist <- NULL
   if(exists("chains",where=exArgs)) {chains <- exArgs$chains} else {chains <- 2} # DO WE WANT 4???
@@ -119,13 +119,13 @@ poly.weibull <- function(formula=NULL,data,...) {
   # Uses the helper 'manipulated_distributions' to create the vectors distr, distr3 and labs
   d3 <- survHE:::manipulate_distributions(distr)$distr3
   method <- "hmc"
-  
+
   # Recomputes the three-letters code for the distributions and the HMC-specific name
   d <- names(availables[[method]][match(d3, availables[[method]])])
-  
+
   # Loads the pre-compiled models
   dso <- stanmodels[[d]]
-  
+
   # Creates the data list for the first formula (mixture component)
   data.stan <- make_data_stan(formula[[1]],data,d3,exArgs)
   # Adds other elements specific to the Poly-Weibull model
@@ -141,7 +141,7 @@ poly.weibull <- function(formula=NULL,data,...) {
   }
   data.stan$mu_beta <- matrix(0,nrow=data.stan$H,ncol=data.stan$M)
   data.stan$sigma_beta <- matrix(10,data.stan$H,data.stan$M)
-  
+
   # Now runs Stan to sample from the posterior distributions
   tic <- proc.time()
   model <- rstan::sampling(dso,data.stan,chains=chains,iter=iter,warmup=warmup,thin=thin,seed=seed,
@@ -149,13 +149,13 @@ poly.weibull <- function(formula=NULL,data,...) {
   toc <- proc.time()-tic
   time_survHE <- toc[3]
   # rstan does have its way of computing the running time, but it may not be the actual one when running multiple
-  # chains. 
+  # chains.
   time_stan <- sum(rstan::get_elapsed_time(model))
-  
+
   # Uses the helper function to compute the *IC
   #### NB: THIS WILL NEED TO BE A LIST
   ics <- compute_ICs_stan(model,d3,data.stan)
-  
+
   # If 'save.stan' is set to TRUE, then saves the Stan model file(s) & data
   if(save.stan) {
     model_code <- attr(model@stanmodel,"model_code")
@@ -163,10 +163,10 @@ poly.weibull <- function(formula=NULL,data,...) {
     writeLines(model_code,con=con)
     cat(paste0("Model code saved to the file: ",con,"\n"))
   }
-  
+
   # Adds a field used in 'make.surv' to indicate the model used
   model_name <- d3
-  
+
   # Finally returns the output
   output=list(list(
     model=model,
@@ -179,7 +179,7 @@ poly.weibull <- function(formula=NULL,data,...) {
     save.stan=save.stan,
     model_name=model_name
   ))
-  
+
   # And formats it as a 'survHE' object
   res=survHE:::format_output_fit.models(output,method,distr,formula,data)
   return(res)

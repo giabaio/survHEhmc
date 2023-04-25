@@ -4,6 +4,7 @@ export(stanmodels)
 import(Rcpp)
 import(dplyr)
 import(survHE)
+import(rstantools)
 import(methods)
 importFrom("rstan", "sampling")
 importFrom("stats", "dgamma", "median", "model.frame", "model.matrix",
