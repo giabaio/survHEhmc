@@ -383,6 +383,7 @@ compute_ICs_stan <- function(model,distr3,data.stan) {
 }
 
 ### Little function to compute the log-likelihood (for the obs vs censored cases)
+#' @export
 compute.loglik <- function(f,s) {
   loglik <- (apply(log(f),1,sum) + apply(log(s),1,sum))
   return(loglik)
