@@ -8,6 +8,10 @@ This is a module to complement the package `survHE` and expand its functionaliti
 ```R
 remotes::install_github("giabaio/survHEhmc")
 ```
+Alternatively, it is possible to install `survHEinla` from source with the following command.
+```
+install.packages("survHEhmc",repos="https://giabaio.github.io/drat/",type="source")
+```
 
 ## Usage
 Once `survHEhmc` is available, then you can refer to the whole manual/instructions for `survHE`. For instance, to fit a model using HMC, the following code would work:
