@@ -10,8 +10,14 @@ remotes::install_github("giabaio/survHEhmc")
 ```
 Alternatively, it is possible to install `survHEinla` from source with the following command.
 ```
-install.packages("survHEhmc",repos="https://giabaio.github.io/drat/",type="source")
+install.packages(
+  "survHEhmc",
+  repos=c("https://giabaio.github.io/drat/","https://www.stats.bris.ac.uk/R/"),
+  type="source",
+  dependencies=TRUE
+)
 ```
+(NB: You can replace the CRAN mirror `https://www.stats.bris.ac.uk/R/` for any other --- see [here](https://cran.r-project.org/)).
 
 ## Usage
 Once `survHEhmc` is available, then you can refer to the whole manual/instructions for `survHE`. For instance, to fit a model using HMC, the following code would work:
