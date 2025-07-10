@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+man-roxygen
+^LICENSE\.md$
+^CONDUCT\.md$
+^CONTRIBUTING\.md$
+^README\.md$
