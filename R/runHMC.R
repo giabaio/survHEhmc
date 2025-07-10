@@ -9,6 +9,7 @@
 #' @seealso fit.models
 #' @references Baio (2020). survHE
 #' @keywords Parametric survival models Hamiltonian Monte Carlo
+#' @export
 runHMC <- function(x,exArgs) {
   # First checks whether INLA is installed (it's only a suggestion, not a full dependency)
   if (!isTRUE(requireNamespace("rstan", quietly = TRUE))) {
@@ -126,6 +127,9 @@ make_data_stan=function(formula,data,distr3,exArgs) {
   availables <- survHE:::load_availables()
   method <- "hmc"
 
+  # Creates a model matrix to get names of covariates
+  mm <- model.matrix(formula,data)
+
   # Modifies the original formula to separate 'time' and 'event'
   formula_temp <- update(formula,paste(all.vars(formula,data)[1],"~",all.vars(formula,data)[2],"+."))
   # Creates a model.frame + renames the variables to conform with stan's expectations later
@@ -162,14 +166,19 @@ make_data_stan=function(formula,data,distr3,exArgs) {
       data.stan$X_cens <- cbind(data.stan$X_cens,rep(0,data.stan$n_cens))
       data.stan$H <- ncol(data.stan$X_obs)
     }
+
+    # Sets colnames for Xobs and Xcens
+    colnames(data.stan$X_obs) <- colnames(data.stan$X_cens) <- colnames(mm)
   }
 
   if (distr3 %in% c("exp", "gom", "wei", "wph", "llo", "lno","pow")) {
     # If it's one of the others (except polyweibull), use the "h,S" format
+    X=matrix(model.matrix(formula,data),nrow=nrow(mf))
+    colnames(X) <- colnames(mm)
     data.stan <- list(t=(mf$time),
                       d=mf$event,
                       n=nrow(mf),
-                      X=matrix(model.matrix(formula,data),nrow=nrow(mf)),
+                      X=X,
                       H=ncol(model.matrix(formula,data))
     )
     # NB: Stan doesn't allow vectors of size 1, so if there's only one covariate (eg intercept only), needs a little trick
@@ -342,9 +351,9 @@ compute_ICs_stan <- function(model,distr3,data.stan) {
 
   # Now computes the log-likelihood and then deviance and DIC, AIC, BIC
   if (distr3 %in% c("gam","gga","gef")) {
-    loglik <- compute.loglik(f,s)
+    loglik <- compute_loglik(f,s)
     D.theta <- -2*loglik
-    loglik.bar <- compute.loglik(f.bar,s.bar)
+    loglik.bar <- compute_loglik(f.bar,s.bar)
     D.bar <- -2*loglik.bar
     data.stan$n <- data.stan$n_obs+data.stan$n_cens
   } else if(distr3=="pow") {
@@ -382,9 +391,19 @@ compute_ICs_stan <- function(model,distr3,data.stan) {
   list(aic=aic,bic=bic,dic=dic,dic2=dic2)
 }
 
-### Little function to compute the log-likelihood (for the obs vs censored cases)
+#' Little function to compute the log-likelihood (for the obs vs censored cases)
+#'
+#' @param f The output from internal `survHEhmc` function that uses the model
+#' output and computes the log-density for models that do not need to separate
+#' out the observed and censored data
+#' @param s The output from internal `survHEhmc` function that uses the model
+#' output and computes the log-density for models that do need to separate
+#' out the observed and censored data
+#' @author Gianluca Baio
+#' @references Baio (2020). survHE
+#' @keywords Parametric survival models Hamiltonian Monte Carlo
 #' @export
-compute.loglik <- function(f,s) {
+compute_loglik <- function(f,s) {
   loglik <- (apply(log(f),1,sum) + apply(log(s),1,sum))
   return(loglik)
 }
