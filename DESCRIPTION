@@ -11,10 +11,10 @@ BugReports: https://github.com/giabaio/survHEhmc/issues
 Description: A module to complement the backbone structure of the package 'survHE' and
     expand its functionality to run survival models under a Bayesian approach (based
     on Hamiltonian Monte Carlo). <doi:10.18637/jss.v095.i14>.
-License: MIT + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.2.9000
 Biarch: true
 Depends: 
     R (>= 4.1.0),
