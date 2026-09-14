@@ -74,13 +74,13 @@ data {
     vector[n] d;                      // censoring indicator (1=observed, 0=censored)
     int<lower=2> H;                   // number of covariates 
     int<lower=2> M;                   // number of components in the PW model
-    matrix[n,H] X[M];                 // array of covariates matrix of covariates (each with n rows and H columns, the max number of covariates)
+    array[M] matrix[n,H] X;                 // array of covariates matrix of covariates (each with n rows and H columns, the max number of covariates)
     matrix[H,M] mu_beta;              // mean of the covariates coefficients
     matrix<lower=0>[H,M] sigma_beta;  // sd of the covariates coefficients
 }
 
 parameters {
-    vector[H] beta[M];              // array of vectors of the coefficients for the linear predictors
+    array[M] vector[H] beta;              // array of vectors of the coefficients for the linear predictors
     positive_ordered[M] alpha;      // ordered vector of shapes
 }
 

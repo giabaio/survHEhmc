@@ -14,7 +14,7 @@ functions {
     // Constructs the log-density for each observation
     w = ((log(x)-mu))/sigma;
     for (i in 1:num_elements(x)) {
-      prob[i] = -log(sigma*x[i])+log(fabs(Q))+pow(Q,-2)*log(pow(Q,-2))+pow(Q,-2)*(Q*w[i]-exp(Q*w[i]))-lgamma(pow(Q,-2));
+      prob[i] = -log(sigma*x[i])+log(abs(Q))+pow(Q,-2)*log(pow(Q,-2))+pow(Q,-2)*(Q*w[i]-exp(Q*w[i]))-lgamma(pow(Q,-2));
     }
     // And the total log-density (as a sum of the individual terms)
     lprob = sum((prob));
@@ -31,7 +31,7 @@ functions {
     tr = x .* u;
     w = ((log(tr)-mu))/sigma;
     for (i in 1:num_elements(x)) {
-      prob[i] = log(u[i])-log(sigma*tr[i])+log(fabs(Q))+pow(Q,-2)*log(pow(Q,-2))+pow(Q,-2)*(Q*w[i]-exp(Q*w[i]))-lgamma(pow(Q,-2));
+      prob[i] = log(u[i])-log(sigma*tr[i])+log(abs(Q))+pow(Q,-2)*log(pow(Q,-2))+pow(Q,-2)*(Q*w[i]-exp(Q*w[i]))-lgamma(pow(Q,-2));
     }
     // And the total log-density (as a sum of the individual terms)
     lprob = sum((prob));
