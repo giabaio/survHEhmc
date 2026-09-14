@@ -74,14 +74,6 @@ and cost-effectiveness modelling. Journal of Statistical Software (2020). vol 95
 \author{
 Gianluca Baio
 }
-\keyword{Bayesian}
-\keyword{Carlo}
-\keyword{Hamiltonian}
-\keyword{Monte}
-\keyword{Parametric}
-\keyword{Poly-Weibull}
-\keyword{inference}
-\keyword{model}
-\keyword{models}
-\keyword{survival}
-\keyword{via}
+\concept{Bayesian inference via Hamiltonian Monte Carlo}
+\concept{Parametric survival models}
+\concept{Poly-Weibull model}

@@ -114,8 +114,8 @@ runHMC <- function(x,exArgs) {
 #' @author Gianluca Baio
 #' @seealso fit.models
 #' @references Baio (2020). survHE
-#' @keywords Parametric survival models Bayesian inference via Hamiltonian
-#' Monte Carlo
+#' @concept Parametric survival models
+#' @concept Bayesian inference via Hamiltonian Monte Carlo
 #' @noRd
 make_data_stan=function(formula,data,distr3,exArgs) {
 
@@ -306,8 +306,9 @@ make_data_stan=function(formula,data,distr3,exArgs) {
 #' @author Gianluca Baio
 #' @seealso fit.models
 #' @references Baio (2020). survHE
-#' @keywords Parametric survival models Bayesian inference via Hamiltonian
-#' Monte Carlo Bayesian inference via Integrated Nested Laplace Approximation
+#' @content Parametric survival models
+#' @content Bayesian inference via Hamiltonian Monte Carlo
+#' @conten Bayesian inference via Integrated Nested Laplace Approximation
 #' @noRd
 compute_ICs_stan <- function(model,distr3,data.stan) {
   # Computes the log-likelihood

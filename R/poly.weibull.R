@@ -43,8 +43,9 @@
 #' @author Gianluca Baio
 #' @seealso \code{fit.models}, \code{make.surv}
 #' @template refs
-#' @keywords Parametric survival models Bayesian inference via Hamiltonian
-#' Monte Carlo Poly-Weibull model
+#' @concept Parametric survival models
+#' @concept Bayesian inference via Hamiltonian Monte Carlo
+#' @concept Poly-Weibull model
 #' @examples
 #' \dontrun{
 #' }
