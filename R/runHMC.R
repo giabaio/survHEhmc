@@ -160,15 +160,15 @@ make_data_stan=function(formula,data,distr3,exArgs) {
     # NB: Stan allows data of 0 size in the 'data' block, so can simply use the definitions above even when there are
     #     no censored observations! However, in that case, there needs to be a 'if' condition to remove the model for 'cens'
 
+    # Sets colnames for Xobs and Xcens
+    colnames(data.stan$X_obs) <- colnames(data.stan$X_cens) <- colnames(mm)
+
     # NB: Stan doesn't allow vectors of size 1, so if there's only one covariate (eg intercept only), needs a little trick
     if (data.stan$H==1) {
       data.stan$X_obs <- cbind(data.stan$X_obs,rep(0,data.stan$n_obs))
       data.stan$X_cens <- cbind(data.stan$X_cens,rep(0,data.stan$n_cens))
       data.stan$H <- ncol(data.stan$X_obs)
     }
-
-    # Sets colnames for Xobs and Xcens
-    colnames(data.stan$X_obs) <- colnames(data.stan$X_cens) <- colnames(mm)
   }
 
   if (distr3 %in% c("exp", "gom", "wei", "wph", "llo", "lno","pow")) {
@@ -308,7 +308,7 @@ make_data_stan=function(formula,data,distr3,exArgs) {
 #' @references Baio (2020). survHE
 #' @content Parametric survival models
 #' @content Bayesian inference via Hamiltonian Monte Carlo
-#' @conten Bayesian inference via Integrated Nested Laplace Approximation
+#' @content Bayesian inference via Integrated Nested Laplace Approximation
 #' @noRd
 compute_ICs_stan <- function(model,distr3,data.stan) {
   # Computes the log-likelihood
