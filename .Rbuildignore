@@ -5,3 +5,4 @@ man-roxygen
 ^CONDUCT\.md$
 ^CONTRIBUTING\.md$
 ^README\.md$
+^\.github$

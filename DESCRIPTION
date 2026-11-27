@@ -1,6 +1,6 @@
 Package: survHEhmc
 Title: Survival Analysis in Health Economic Evaluation using Hamiltonian Monte Carlo
-Version: 0.0.11
+Version: 0.0.12
 Authors@R: c(
     person(given = "Gianluca",family = "Baio",role = c("aut", "cre"),email = "g.baio@ucl.ac.uk"),
     person("Philip","Cooney",role="ctb",email="philip.cooney@hotmail.com"),
@@ -34,3 +34,4 @@ LinkingTo:
     StanHeaders (>= 2.18.0)
 SystemRequirements: GNU make
 Config/roxygen2/version: 8.1.1
+RoxygenNote: 7.3.1

@@ -1,3 +1,9 @@
+# survHEhmc 0.0.12
+
+## November 2026
+
+* `make_data_stan()`: for the Royston-Parmar model (`distr="rps"`), gives a warning when `fit.models()` is called with `scale` other than `"hazard"` or `timescale` other than `"log"`. The Stan model `RP.stan` is only implemented on the hazard scale with log time; thus, these options were previously ignored without notice (see also [survHE PR #75](https://github.com/giabaio/survHE/pull/75)).
+
 # survHEhmc 0.0.11
 
 ## October 2026

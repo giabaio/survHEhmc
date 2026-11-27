@@ -192,6 +192,11 @@ make_data_stan=function(formula,data,distr3,exArgs) {
   if (distr3=="rps"){
     # If it's Royston-Parmar splines, then gets the correct data
     if (exists("k",where = exArgs)) {k <- exArgs$k} else {k <- 0}
+    # The HMC model is only implemented on the hazard scale with log time; warns if the user asks otherwise
+    if ((exists("scale",where = exArgs) && exArgs$scale!="hazard") ||
+        (exists("timescale",where = exArgs) && exArgs$timescale!="log")) {
+      warning("For method='hmc', the Royston-Parmar model is only available with scale='hazard' and timescale='log'.\n The values given for 'scale' and/or 'timescale' are ignored.")
+    }
     knots <- quantile(log((mf %>% filter(event==1))$time), seq(0,1,length=k+2))
     # Uses flexsurv to compute the basis and derivatives of the basis
     B <- flexsurv::basis(knots,log(mf$time))
@@ -306,9 +311,9 @@ make_data_stan=function(formula,data,distr3,exArgs) {
 #' @author Gianluca Baio
 #' @seealso fit.models
 #' @references Baio (2020). survHE
-#' @content Parametric survival models
-#' @content Bayesian inference via Hamiltonian Monte Carlo
-#' @content Bayesian inference via Integrated Nested Laplace Approximation
+#' @concept Parametric survival models
+#' @concept Bayesian inference via Hamiltonian Monte Carlo
+#' @concept Bayesian inference via Integrated Nested Laplace Approximation
 #' @noRd
 compute_ICs_stan <- function(model,distr3,data.stan) {
   # Computes the log-likelihood
